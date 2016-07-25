@@ -12,7 +12,7 @@ require 'biocyc'
 # @see http://biocyc.org/getxml?id=ECOLI:VALSYN-PWY&detail=full
 
 ###
-# Create a new object identifier for "ECOLI:VALSYN_PWY".
+# Create a new object identifier.
 object_id = BioCyc::ObjectId.for("ECOLI:VALSYN-PWY")
 
 ###
@@ -20,7 +20,7 @@ object_id = BioCyc::ObjectId.for("ECOLI:VALSYN-PWY")
 puts object_id.inspect
 
 ###
-# Resolve the XML document and construct object.
+# Download XML document and construct corresponding object.
 object = object_id.to_object
 
 ###
