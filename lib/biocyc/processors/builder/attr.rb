@@ -1,5 +1,8 @@
 require "active_support/inflector"
 
+require "biocyc/errors"
+require "biocyc/type"
+
 module BioCyc # :nodoc:
   module Processors # :nodoc:
     module Builder # :nodoc:

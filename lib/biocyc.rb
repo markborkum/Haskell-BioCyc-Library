@@ -1,19 +1,14 @@
-require "rubygems"
-require "linkeddata"
-require "nokogiri"
+require "log4r"
 
-require_relative "biocyc/errors"
-
-require_relative "biocyc/atom_mappings"
-require_relative "biocyc/object_id"
-require_relative "biocyc/quantity"
-require_relative "biocyc/web_services"
-
-require_relative "biocyc/processors"
-require_relative "biocyc/models"
+require "biocyc/models"
 
 # BioCyc Web Services
 #
 # @see http://biocyc.org/web-services.shtml
 module BioCyc
+  # Logger
+  #
+  # @return [Log4r::Logger]
+  LOGGER = Log4r::Logger.new("BioCyc")
+  LOGGER.outputters = Log4r::Outputter.stderr
 end

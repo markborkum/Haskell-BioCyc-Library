@@ -2,10 +2,12 @@ require "active_support/cache"
 require "active_support/core_ext/hash/indifferent_access"
 require "active_support/inflector"
 
-require_relative "type"
-require_relative "processors/builder/processor"
-require_relative "processors/builder/attr"
-require_relative "processors/builder/belongs_to"
+require "biocyc/errors"
+require "biocyc/object_id"
+require "biocyc/processors/builder/processor"
+require "biocyc/processors/builder/attr"
+require "biocyc/processors/builder/belongs_to"
+require "biocyc/web_services"
 
 module BioCyc # :nodoc:
   # Mixin for dereferenceable types (must provide `#orgid` and `#frameid` methods)
@@ -48,20 +50,38 @@ module BioCyc # :nodoc:
         if cache.exist?(cache_key)
           cache.fetch(cache_key)
         else
-          doc = BioCyc.getxml(orgid, frameid, detail)
+          doc = BioCyc.getxml(detail.nil? ? unescape(orgid) : escape(orgid), detail.nil? ? unescape(frameid) : escape(frameid), detail)
           
-          if !(node = doc.xpath("/ptools-xml/*[@orgid = '#{orgid}' and @frameid = '#{frameid}'][1]").first).nil?
-            klass = "BioCyc::#{node.name.gsub("-", "")}".constantize
-            
+          if !(node = doc.xpath("/ptools-xml/*[@orgid = '#{unescape(orgid)}' and @frameid = '#{unescape(frameid)}'][1]").first).nil? && !node.name.eql?("Error")
+            klass = "BioCyc::#{node.name.gsub("-", "").classify}".constantize
+          
             object = klass.parse(node, &block)
-            
+          
             cache.write(cache_key, object)
-            
+          
             object
           else
             raise BioCyc::ObjectNotFound.new("BioCyc object not found #{orgid}:#{frameid}#{detail.nil? ? "" : " (#{detail.inspect})"}", orgid, frameid, detail)
           end
         end
+      end
+
+      private
+
+      # Escape unsafe characters with codes
+      #
+      # @param s [#to_s]
+      # @return String
+      def escape(s)
+        s.to_s.gsub("+", "%2B")
+      end
+
+      # Unescape unsafe characters with codes
+      #
+      # @param s [#to_s]
+      # @return String
+      def unescape(s)
+        s.to_s.gsub(/%2[Bb]/, "+")
       end
     end
   end

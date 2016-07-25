@@ -11,10 +11,18 @@ module BioCyc # :nodoc:
       @quantity, @units = quantity, units
     end
 
-    # Returns a string representation of this quantity
-    #
-    # @return [String]
-    def to_s
+    def ==(other) # :nodoc:
+      return false unless other.is_a?(BioCyc::Quantity)
+      
+      (quantity == other.quantity) && (units == other.units)
+    end
+    alias_method :eql?, :==
+
+    def hash # :nodoc:
+      quantity.hash ^ units.hash
+    end
+
+    def to_s # :nodoc:
       [quantity, units].compact.collect(&:to_s).join(" ")
     end
   end

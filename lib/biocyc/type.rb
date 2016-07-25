@@ -1,11 +1,11 @@
-require_relative "type/string"
+require "biocyc/type/string"
 
-require_relative "type/boolean"
-require_relative "type/date"
-require_relative "type/float"
-require_relative "type/float_with_units"
-require_relative "type/integer"
-require_relative "type/integer_with_units"
+require "biocyc/type/boolean"
+require "biocyc/type/date"
+require "biocyc/type/float"
+require "biocyc/type/float_with_units"
+require "biocyc/type/integer"
+require "biocyc/type/integer_with_units"
 
 module BioCyc # :nodoc:
   module Type # :nodoc:

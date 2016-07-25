@@ -1,3 +1,5 @@
+require "biocyc/errors"
+
 module BioCyc # :nodoc:
   # A BioCyc object identifier
   class ObjectId
@@ -8,7 +10,7 @@ module BioCyc # :nodoc:
     
     # Returns a new instance of this class
     #
-    # @param id [String]
+    # @param id [#to_s]
     # @raise [BioCyc::ObjectIdInvalid]
     # @return [BioCyc::ObjectId]
     def self.for(id)
@@ -27,13 +29,21 @@ module BioCyc # :nodoc:
     # @param frameid [#to_s]
     # @return [BioCyc::ObjectId]
     def initialize(orgid, frameid)
-      @orgid, @frameid = orgid.to_s.gsub("+", "%2B"), frameid.to_s.gsub("+", "%2B")
+      @orgid, @frameid = orgid, frameid
     end
 
-    # Returns a string representation of this instance
-    #
-    # @return [String]
-    def to_s
+    def ==(other) # :nodoc:
+      return false unless other.is_a?(BioCyc::ObjectId)
+      
+      (orgid == other.orgid) && (frameid == other.frameid)
+    end
+    alias_method :eql?, :==
+
+    def hash # :nodoc:
+      orgid.hash ^ frameid.hash
+    end
+
+    def to_s # :nodoc:
       "#{orgid}:#{frameid}"
     end
   end

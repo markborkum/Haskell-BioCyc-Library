@@ -12,6 +12,8 @@ module BioCyc # :nodoc:
   def self.download_atom_mappings(orgid, frameid)
     uri_string = "http://biocyc.org/%s/download-atom-mappings?object=%s" % [orgid, frameid]
     
+    BioCyc::LOGGER.debug("[GET] #{uri_string}")
+    
     uri = URI.parse(uri_string)
     
     uri.open { |io|

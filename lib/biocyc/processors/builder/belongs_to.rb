@@ -1,3 +1,6 @@
+require "biocyc/errors"
+require "biocyc/object_id"
+
 module BioCyc # :nodoc:
   module Processors # :nodoc:
     module Builder # :nodoc:

@@ -1,6 +1,9 @@
 require "open-uri"
 require "zlib"
 
+require "linkeddata"
+require "nokogiri"
+
 module BioCyc # :nodoc:
   # BioCyc Object-Id retrieval
   # 
@@ -16,6 +19,8 @@ module BioCyc # :nodoc:
     else
       uri_string = "http://websvc.biocyc.org/getxml?id=%s:%s&detail=%s" % [orgid, frameid, detail]
     end
+    
+    BioCyc::LOGGER.debug("[GET] #{uri_string}")
     
     uri = URI.parse(uri_string)
     
@@ -42,6 +47,8 @@ module BioCyc # :nodoc:
       uri_string = "http://websvc.biocyc.org/apixml?fn=%s&id=%s:%s&detail=%s" % [api_function, orgid, frameid, detail]
     end
     
+    BioCyc::LOGGER.debug("[GET] #{uri_string}")
+    
     uri = URI.parse(uri_string)
     
     uri.open { |io|
@@ -64,6 +71,8 @@ module BioCyc # :nodoc:
     else
       uri_string = "http://websvc.biocyc.org/xmlquery?query=%s&detail=%s" % [query, detail]
     end
+    
+    BioCyc::LOGGER.debug("[GET] #{uri_string}")
     
     uri = URI.parse(uri_string)
     
@@ -88,6 +97,8 @@ module BioCyc # :nodoc:
     else
       uri_string = "http://websvc.biocyc.org/%s/pathway-biopax?type=%s&object=%s" % [orgid, type, pathway]
     end
+
+    BioCyc::LOGGER.debug("[GET] #{uri_string}")
 
     uri = URI.parse(uri_string)
 

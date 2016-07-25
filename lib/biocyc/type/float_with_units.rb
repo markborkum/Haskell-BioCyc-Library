@@ -1,5 +1,7 @@
 require "active_support/core_ext/object/try"
 
+require "biocyc/quantity"
+
 module BioCyc # :nodoc:
   module Type # :nodoc:
     class FloatWithUnits < Float # :nodoc:
